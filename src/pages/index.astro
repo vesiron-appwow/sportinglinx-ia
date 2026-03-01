@@ -103,7 +103,7 @@ import { regions } from "../data/regions";
 </div>
 
 <script>
-  const REGION_MAP = JSON.parse(`{JSON.stringify(regions)}`);
+  const REGION_MAP = {JSON.stringify(regions)};
 
   const countryEl = document.getElementById("country");
   const regionEl = document.getElementById("region");
