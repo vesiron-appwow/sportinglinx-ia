@@ -11,7 +11,6 @@ const selectedRegion = initial.region ?? "";
   <form class="card" style="padding:14px" method="GET" action={Astro.url.pathname}>
     <div class="grid cols-3">
 
-      <!-- Search -->
       <div>
         <label class="muted">Search</label>
         <input
@@ -22,7 +21,6 @@ const selectedRegion = initial.region ?? "";
         />
       </div>
 
-      <!-- Country -->
       <div>
         <label class="muted">Country</label>
         <select
@@ -32,33 +30,23 @@ const selectedRegion = initial.region ?? "";
         >
           <option value="">Select Country</option>
           {Object.keys(regions).map(code => (
-            <option value={code} selected={selectedCountry === code}>
-              {code}
-            </option>
+            <option value={code} selected={selectedCountry === code}>{code}</option>
           ))}
         </select>
       </div>
 
-      <!-- Region -->
       <div>
         <label class="muted">Region</label>
         <select
           id="region"
           name="region"
-          disabled={!selectedCountry}
+          disabled
           style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)"
         >
           <option value="">Select Region</option>
-          {selectedCountry &&
-            regions[selectedCountry]?.map(r => (
-              <option value={r} selected={selectedRegion === r}>
-                {r}
-              </option>
-            ))}
         </select>
       </div>
 
-      <!-- Condition -->
       <div>
         <label class="muted">Condition</label>
         <select
@@ -68,13 +56,10 @@ const selectedRegion = initial.region ?? "";
           <option value="">Any</option>
           <option value="new" selected={initial.condition === "new"}>New</option>
           <option value="used" selected={initial.condition === "used"}>Used</option>
-          <option value="collectible" selected={initial.condition === "collectible"}>
-            Collectible
-          </option>
+          <option value="collectible" selected={initial.condition === "collectible"}>Collectible</option>
         </select>
       </div>
 
-      <!-- Min Price -->
       <div>
         <label class="muted">Min Price</label>
         <input
@@ -86,7 +71,6 @@ const selectedRegion = initial.region ?? "";
         />
       </div>
 
-      <!-- Max Price -->
       <div>
         <label class="muted">Max Price</label>
         <input
@@ -107,38 +91,13 @@ const selectedRegion = initial.region ?? "";
   </form>
 </section>
 
-<!-- Inject region data safely for client-side use -->
-<script type="application/json" id="region-data">
-  {JSON.stringify(regions)}
+<!-- Region data + initial selections for the browser script -->
+<script type="application/json" id="slx-region-data">
+  {JSON.stringify({
+    regions,
+    initial: { country: selectedCountry, region: selectedRegion }
+  })}
 </script>
 
-<!-- Client-side logic -->
-<script is:inline>
-  document.addEventListener("DOMContentLoaded", () => {
-    const country = document.getElementById("country");
-    const region = document.getElementById("region");
-    const regionData = document.getElementById("region-data");
-
-    if (!country || !region || !regionData) return;
-
-    const REGION_MAP = JSON.parse(regionData.textContent);
-
-    country.addEventListener("change", () => {
-      const selected = country.value;
-
-      if (!selected) {
-        region.disabled = true;
-        region.innerHTML = '<option value="">Select Region</option>';
-        return;
-      }
-
-      region.disabled = false;
-
-      const list = REGION_MAP[selected] || [];
-
-      region.innerHTML =
-        '<option value="">Select Region</option>' +
-        list.map(r => `<option value="${r}">${r}</option>`).join("");
-    });
-  });
-</script>
+<!-- External browser JS (more reliable than inline) -->
+<script src="/js/regionFilter.js" defer></script>
