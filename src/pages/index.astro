@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { regions } from "../data/regions";
 ---
 
 <BaseLayout title="SportingLinx – Sporting Goods Local & Global">
@@ -34,6 +33,7 @@ import { regions } from "../data/regions";
       <div class="slx-search-inner">
 
         <form method="GET" class="slx-panel">
+
           <div class="slx-grid">
 
             <div class="slx-field slx-field-primary">
@@ -92,58 +92,14 @@ import { regions } from "../data/regions";
           <button class="slx-search-btn">
             Search Sporting Goods
           </button>
+
         </form>
 
       </div>
     </section>
 
   </div>
-<script is:inline>
-  const REGION_MAP = {JSON.stringify(regions).replace(/</g, '\\u003c')};
 
-  const countryEl = document.getElementById("country");
-  const regionEl = document.getElementById("region");
-
-  if (!countryEl || !regionEl) {
-    console.warn("Country or Region element missing");
-  } else {
-
-    function escapeHtml(s) {
-      return String(s)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function renderOptions(list) {
-      let html = '<option value="">Select Region</option>';
-      if (!Array.isArray(list)) return html;
-      html += list.map(r =>
-        `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`
-      ).join("");
-      return html;
-    }
-
-    function applyCountry(code) {
-      if (!code || code === "GLOBAL" || !REGION_MAP[code]) {
-        regionEl.innerHTML = '<option value="">Select Region</option>';
-        regionEl.disabled = true;
-        return;
-      }
-
-      regionEl.innerHTML = renderOptions(REGION_MAP[code]);
-      regionEl.disabled = false;
-    }
-
-    // Initial state
-    applyCountry(countryEl.value || "");
-
-    countryEl.addEventListener("change", () => {
-      applyCountry(countryEl.value || "");
-    });
-  }
-</script>
+  <script src="/js/regionFilter.js"></script>
 
 </BaseLayout>
