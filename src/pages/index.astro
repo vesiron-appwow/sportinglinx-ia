@@ -1,132 +1,159 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { regions } from "../data/regions";
-
 ---
 
 <BaseLayout title="SportingLinx – Sporting Goods Local & Global">
 
-<div class="slx-theme">
+  <div class="slx-theme">
 
-<header class="slx-header">
-  <div class="slx-header-inner">
-    <div class="slx-brand">
-      <div class="slx-badge">SL</div>
-      <div>
-        <div class="slx-title">SportingLinx</div>
-        <div class="slx-sub">Sporting Discovery</div>
+    <header class="slx-header">
+      <div class="slx-header-inner">
+        <div class="slx-brand">
+          <div class="slx-badge">SL</div>
+          <div>
+            <div class="slx-title">SportingLinx</div>
+            <div class="slx-sub">Sporting Discovery</div>
+          </div>
+        </div>
+        <a href="https://appwow.pages.dev" class="slx-back">← AppWow</a>
       </div>
-    </div>
-    <a href="https://appwow.pages.dev" class="slx-back">← AppWow</a>
-  </div>
-</header>
+    </header>
 
-<section class="slx-hero">
-  <div class="slx-hero-inner">
-    <div class="slx-tag">GLOBAL SPORTING DISCOVERY</div>
-    <h1>
-      Sporting Goods
-      <span class="slx-subline">Local & Global</span>
-    </h1>
-  </div>
-</section>
+    <section class="slx-hero">
+      <div class="slx-hero-inner">
+        <div class="slx-tag">GLOBAL SPORTING DISCOVERY</div>
+        <h1>
+          Sporting Goods
+          <span class="slx-subline">Local & Global</span>
+        </h1>
+      </div>
+    </section>
 
-<section class="slx-search-section">
-  <div class="slx-search-inner">
+    <section class="slx-search-section">
+      <div class="slx-search-inner">
 
-    <form method="GET" class="slx-panel">
+        <form method="GET" class="slx-panel">
+          <div class="slx-grid">
 
-      <div class="slx-grid">
+            <div class="slx-field slx-field-primary">
+              <label>What Sport?</label>
+              <select name="sport">
+                <option value="">Select Sport</option>
+                <option>Shooting</option>
+                <option>Fishing</option>
+                <option>Golf</option>
+                <option>Cycling</option>
+                <option>Equestrian</option>
+                <option>Motorsport</option>
+                <option>Water Sports</option>
+                <option>Archery</option>
+                <option>Field Sports</option>
+                <option>Fitness</option>
+                <option>Football</option>
+                <option>Tennis</option>
+                <option>Cricket</option>
+                <option>Diving</option>
+                <option>Other</option>
+              </select>
+            </div>
 
-        <div class="slx-field slx-field-primary">
-          <label>What Sport?</label>
-          <select name="sport">
-            <option value="">Select Sport</option>
-            <option>Shooting</option>
-            <option>Fishing</option>
-            <option>Golf</option>
-            <option>Cycling</option>
-            <option>Equestrian</option>
-            <option>Motorsport</option>
-            <option>Water Sports</option>
-            <option>Archery</option>
-            <option>Field Sports</option>
-            <option>Fitness</option>
-            <option>Football</option>
-            <option>Tennis</option>
-            <option>Cricket</option>
-            <option>Diving</option>
-            <option>Other</option>
-          </select>
-        </div>
+            <div class="slx-field">
+              <label>Country</label>
+              <select id="country" name="country">
+                <option value="">Select Country</option>
+                <option value="UK">United Kingdom</option>
+                <option value="USA">United States</option>
+                <option value="AUS">Australia</option>
+                <option value="EU">Europe</option>
+                <option value="GLOBAL">Global</option>
+              </select>
+            </div>
 
-        <div class="slx-field">
-          <label>Country</label>
-          <select id="country" name="country">
-            <option value="">Select Country</option>
-            <option value="UK">United Kingdom</option>
-            <option value="USA">United States</option>
-            <option value="AUS">Australia</option>
-            <option value="EU">Europe</option>
-            <option value="GLOBAL">Global</option>
-          </select>
-        </div>
+            <div class="slx-field">
+              <label>Region / State / County</label>
+              <select id="region" name="region" disabled>
+                <option value="">Select Region</option>
+              </select>
+            </div>
 
-        <div class="slx-field">
-          <label>Region / State / County</label>
-          <select id="region" name="region" disabled>
-            <option value="">Select Region</option>
-          </select>
-        </div>
+            <div class="slx-field">
+              <label>Min Price (£)</label>
+              <input name="priceMin" type="number" />
+            </div>
 
-        <div class="slx-field">
-          <label>Min Price (£)</label>
-          <input name="priceMin" type="number" />
-        </div>
+            <div class="slx-field">
+              <label>Max Price (£)</label>
+              <input name="priceMax" type="number" />
+            </div>
 
-        <div class="slx-field">
-          <label>Max Price (£)</label>
-          <input name="priceMax" type="number" />
-        </div>
+          </div>
+
+          <button class="slx-search-btn">
+            Search Sporting Goods
+          </button>
+        </form>
 
       </div>
-
-      <button class="slx-search-btn">
-        Search Sporting Goods
-      </button>
-
-    </form>
+    </section>
 
   </div>
-</section>
 
-</div>
+  <!-- 1) Inject data as JSON (this is the reliable Astro pattern) -->
+  <script type="application/json" id="region-data">
+    {JSON.stringify(regions)}
+  </script>
 
-<script is:inline>
-  const REGION_MAP = {JSON.stringify(regions)};
+  <!-- 2) Browser script reads JSON + wires the dropdowns -->
+  <script is:inline>
+    (function () {
+      const dataEl = document.getElementById("region-data");
+      const countryEl = document.getElementById("country");
+      const regionEl = document.getElementById("region");
 
-  const countryEl = document.getElementById("country");
-  const regionEl = document.getElementById("region");
+      if (!dataEl || !countryEl || !regionEl) return;
 
-  function buildOptions(list) {
-    let html = '<option value="">Select Region</option>';
-    if (!Array.isArray(list)) return html;
-    html += list.map(r => `<option value="${r}">${r}</option>`).join("");
-    return html;
-  }
+      let REGION_MAP = {};
+      try {
+        REGION_MAP = JSON.parse(dataEl.textContent || "{}");
+      } catch (e) {
+        console.error("Region data JSON invalid", e);
+        return;
+      }
 
-  countryEl.addEventListener("change", () => {
-    const code = countryEl.value;
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
 
-    if (!code || !REGION_MAP[code]) {
-      regionEl.innerHTML = '<option value="">Select Region</option>';
-      regionEl.disabled = true;
-      return;
-    }
+      function renderOptions(list) {
+        let html = '<option value="">Select Region</option>';
+        if (!Array.isArray(list) || list.length === 0) return html;
+        html += list.map(r => `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`).join("");
+        return html;
+      }
 
-    regionEl.innerHTML = buildOptions(REGION_MAP[code]);
-    regionEl.disabled = false;
-  });
-</script>
+      function applyCountry(code) {
+        if (!code || code === "GLOBAL" || !REGION_MAP[code]) {
+          regionEl.innerHTML = '<option value="">Select Region</option>';
+          regionEl.disabled = true;
+          return;
+        }
+        regionEl.innerHTML = renderOptions(REGION_MAP[code]);
+        regionEl.disabled = false;
+      }
+
+      // Initial state (supports querystring reloads)
+      applyCountry(countryEl.value || "");
+
+      countryEl.addEventListener("change", () => {
+        applyCountry(countryEl.value || "");
+      });
+    })();
+  </script>
 
 </BaseLayout>
