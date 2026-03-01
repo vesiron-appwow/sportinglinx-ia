@@ -98,62 +98,52 @@ import { regions } from "../data/regions";
     </section>
 
   </div>
+<script is:inline>
+  const REGION_MAP = {JSON.stringify(regions).replace(/</g, '\\u003c')};
 
-  <!-- 1) Inject data as JSON (this is the reliable Astro pattern) -->
-  <script type="application/json" id="region-data">
-    {JSON.stringify(regions)}
-  </script>
+  const countryEl = document.getElementById("country");
+  const regionEl = document.getElementById("region");
 
-  <!-- 2) Browser script reads JSON + wires the dropdowns -->
-  <script is:inline>
-    (function () {
-      const dataEl = document.getElementById("region-data");
-      const countryEl = document.getElementById("country");
-      const regionEl = document.getElementById("region");
+  if (!countryEl || !regionEl) {
+    console.warn("Country or Region element missing");
+  } else {
 
-      if (!dataEl || !countryEl || !regionEl) return;
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
 
-      let REGION_MAP = {};
-      try {
-        REGION_MAP = JSON.parse(dataEl.textContent || "{}");
-      } catch (e) {
-        console.error("Region data JSON invalid", e);
+    function renderOptions(list) {
+      let html = '<option value="">Select Region</option>';
+      if (!Array.isArray(list)) return html;
+      html += list.map(r =>
+        `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`
+      ).join("");
+      return html;
+    }
+
+    function applyCountry(code) {
+      if (!code || code === "GLOBAL" || !REGION_MAP[code]) {
+        regionEl.innerHTML = '<option value="">Select Region</option>';
+        regionEl.disabled = true;
         return;
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
-      }
+      regionEl.innerHTML = renderOptions(REGION_MAP[code]);
+      regionEl.disabled = false;
+    }
 
-      function renderOptions(list) {
-        let html = '<option value="">Select Region</option>';
-        if (!Array.isArray(list) || list.length === 0) return html;
-        html += list.map(r => `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`).join("");
-        return html;
-      }
+    // Initial state
+    applyCountry(countryEl.value || "");
 
-      function applyCountry(code) {
-        if (!code || code === "GLOBAL" || !REGION_MAP[code]) {
-          regionEl.innerHTML = '<option value="">Select Region</option>';
-          regionEl.disabled = true;
-          return;
-        }
-        regionEl.innerHTML = renderOptions(REGION_MAP[code]);
-        regionEl.disabled = false;
-      }
-
-      // Initial state (supports querystring reloads)
+    countryEl.addEventListener("change", () => {
       applyCountry(countryEl.value || "");
-
-      countryEl.addEventListener("change", () => {
-        applyCountry(countryEl.value || "");
-      });
-    })();
-  </script>
+    });
+  }
+</script>
 
 </BaseLayout>
