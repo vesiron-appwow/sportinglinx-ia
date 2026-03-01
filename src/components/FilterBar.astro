@@ -1,39 +1,103 @@
 ---
+import { regions } from "../data/regions";
+
 const { initial = {} } = Astro.props;
+
+const selectedCountry = initial.country ?? "";
+const selectedRegion = initial.region ?? "";
 ---
+
 <section class="container" style="padding:14px var(--pad) 0">
   <form class="card" style="padding:14px" method="GET" action={Astro.url.pathname}>
     <div class="grid cols-3">
+
+      <!-- Search -->
       <div>
         <label class="muted">Search</label>
-        <input name="q" value={initial.q ?? ""} placeholder="e.g. boots, rod, signed shirt" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+        <input
+          name="q"
+          value={initial.q ?? ""}
+          placeholder="e.g. boots, rod, signed shirt"
+          style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)"
+        />
       </div>
+
+      <!-- Country -->
       <div>
-        <label class="muted">Brand</label>
-        <input name="brand" value={initial.brand ?? ""} placeholder="e.g. Nike, Shimano, Beretta" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
-      </div>
-      <div>
-        <label class="muted">Condition</label>
-        <select name="condition" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)">
-          <option value="">Any</option>
-          <option value="new" selected={initial.condition==="new"}>New</option>
-          <option value="used" selected={initial.condition==="used"}>Used</option>
-          <option value="collectible" selected={initial.condition==="collectible"}>Collectible</option>
+        <label class="muted">Country</label>
+        <select
+          id="country"
+          name="country"
+          style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)"
+        >
+          <option value="">Select Country</option>
+          {Object.keys(regions).map(code => (
+            <option value={code} selected={selectedCountry === code}>
+              {code}
+            </option>
+          ))}
         </select>
       </div>
 
+      <!-- Region -->
       <div>
         <label class="muted">Region</label>
-        <input name="region" value={initial.region ?? ""} placeholder="e.g. Sussex" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+        <select
+          id="region"
+          name="region"
+          disabled={!selectedCountry}
+          style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)"
+        >
+          <option value="">Select Region</option>
+          {selectedCountry &&
+            regions[selectedCountry]?.map(r => (
+              <option value={r} selected={selectedRegion === r}>
+                {r}
+              </option>
+            ))}
+        </select>
       </div>
+
+      <!-- Condition -->
+      <div>
+        <label class="muted">Condition</label>
+        <select
+          name="condition"
+          style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)"
+        >
+          <option value="">Any</option>
+          <option value="new" selected={initial.condition === "new"}>New</option>
+          <option value="used" selected={initial.condition === "used"}>Used</option>
+          <option value="collectible" selected={initial.condition === "collectible"}>
+            Collectible
+          </option>
+        </select>
+      </div>
+
+      <!-- Min Price -->
       <div>
         <label class="muted">Min Price</label>
-        <input name="priceMin" value={initial.priceMin ?? ""} inputmode="numeric" placeholder="0" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+        <input
+          name="priceMin"
+          value={initial.priceMin ?? ""}
+          inputmode="numeric"
+          placeholder="0"
+          style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)"
+        />
       </div>
+
+      <!-- Max Price -->
       <div>
         <label class="muted">Max Price</label>
-        <input name="priceMax" value={initial.priceMax ?? ""} inputmode="numeric" placeholder="9999" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+        <input
+          name="priceMax"
+          value={initial.priceMax ?? ""}
+          inputmode="numeric"
+          placeholder="9999"
+          style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)"
+        />
       </div>
+
     </div>
 
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap">
@@ -42,3 +106,39 @@ const { initial = {} } = Astro.props;
     </div>
   </form>
 </section>
+
+<!-- Inject region data safely for client-side use -->
+<script type="application/json" id="region-data">
+  {JSON.stringify(regions)}
+</script>
+
+<!-- Client-side logic -->
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const country = document.getElementById("country");
+    const region = document.getElementById("region");
+    const regionData = document.getElementById("region-data");
+
+    if (!country || !region || !regionData) return;
+
+    const REGION_MAP = JSON.parse(regionData.textContent);
+
+    country.addEventListener("change", () => {
+      const selected = country.value;
+
+      if (!selected) {
+        region.disabled = true;
+        region.innerHTML = '<option value="">Select Region</option>';
+        return;
+      }
+
+      region.disabled = false;
+
+      const list = REGION_MAP[selected] || [];
+
+      region.innerHTML =
+        '<option value="">Select Region</option>' +
+        list.map(r => `<option value="${r}">${r}</option>`).join("");
+    });
+  });
+</script>
