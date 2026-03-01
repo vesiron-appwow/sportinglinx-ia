@@ -102,31 +102,6 @@ import { regions } from "../data/regions";
 
 </div>
 
-<script type="module">
-  import { regions } from "/src/data/regions.ts";
 
-  const countrySelect = document.getElementById("countrySelect");
-  const regionSelect = document.getElementById("regionSelect");
-
-  countrySelect.addEventListener("change", function () {
-    const selected = this.value;
-
-    regionSelect.innerHTML = '<option value="">Select Region</option>';
-
-    if (!selected || selected === "GLOBAL" || !regions[selected]) {
-      regionSelect.disabled = true;
-      return;
-    }
-
-    regions[selected].forEach(region => {
-      const option = document.createElement("option");
-      option.value = region;
-      option.textContent = region;
-      regionSelect.appendChild(option);
-    });
-
-    regionSelect.disabled = false;
-  });
-</script>
 
 </BaseLayout>
