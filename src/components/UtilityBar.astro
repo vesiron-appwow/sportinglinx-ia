@@ -1,0 +1,25 @@
+---
+const links = [
+  { href: "https://appwow.pages.dev", label: "AppWow", icon: "⚡" },
+  { href: "https://linxlocal.pages.dev", label: "LinxLocal", icon: "📍" },
+  { href: "https://carlinx-ia.pages.dev", label: "CarLinx", icon: "🚗" },
+  { href: "https://homelinx-ia.pages.dev", label: "HomeLinx", icon: "🏠" }
+];
+---
+<section style="background: var(--slx-primary); border-bottom: 1px solid rgba(255,255,255,.12)">
+  <div class="container" style="display:flex;gap:14px;align-items:center;justify-content:space-between;padding:12px var(--pad)">
+    <div style="display:flex;gap:10px;align-items:center">
+      <span class="badge" style="border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff">
+        🌲 SportingLinx
+      </span>
+      <span style="color: rgba(255,255,255,.75); font-size:.95rem">Countryside discovery</span>
+    </div>
+    <nav style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+      {links.map(l => (
+        <a href={l.href} class="badge" style="border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff">
+          <span>{l.icon}</span><span>{l.label}</span>
+        </a>
+      ))}
+    </nav>
+  </div>
+</section>

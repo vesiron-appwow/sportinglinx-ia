@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UtilityBar from "../../components/UtilityBar.astro";
+import ComplianceBanner from "../../components/ComplianceBanner.astro";
+import UpgradeGate from "../../components/UpgradeGate.astro";
+import { getSportingItem } from "../../lib/api";
+import { getGateState } from "../../lib/gate";
+
+const apiBase = import.meta.env.VTL_API_BASE ?? "http://127.0.0.1:8787";
+const id = Astro.params.id!;
+const item = await getSportingItem(fetch, apiBase, id);
+
+const cookieHeader = Astro.request.headers.get("cookie") ?? undefined;
+const gate = await getGateState(fetch, apiBase, cookieHeader);
+
+const canAct = gate.isLoggedIn && gate.canAct;
+const price = item?.price != null ? `£${Number(item.price).toFixed(0)}` : "POA";
+---
+<BaseLayout title={`SportingLinx — ${item?.title ?? "Item"}`}>
+  <UtilityBar />
+
+  <section class="container" style="padding:14px var(--pad) 0">
+    {!item ? (
+      <div class="card" style="padding:14px">
+        <div class="badge">Not found</div>
+        <p class="muted" style="margin:10px 0 0">This item may have been removed.</p>
+      </div>
+    ) : (
+      <div class="grid cols-2">
+        <div class="card" style="padding:14px">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+            <div>
+              <div class="badge">{item.category}</div>
+              <h1 style="margin:.6rem 0 .2rem">{item.title}</h1>
+              <div class="muted">{item.brand ? `${item.brand} • ` : ""}{item.condition ?? "Condition N/A"}{item.region ? ` • ${item.region}` : ""}</div>
+            </div>
+            <div class="badge">{price}</div>
+          </div>
+
+          <div class="hr"></div>
+          <p style="margin:0;line-height:1.6">{item.description}</p>
+
+          <div class="hr"></div>
+
+          <UpgradeGate canAct={canAct} />
+
+          {canAct && (
+            <div class="card" style="padding:12px;margin-top:12px;border-style:dashed">
+              <div class="badge">Contact</div>
+              <p class="muted" style="margin:10px 0 0;line-height:1.5">
+                Contact actions are subscription-gated. In v1 this is a placeholder hook into LINK3 / contact flow.
+              </p>
+              <div style="margin-top:10px">
+                <button class="btn" type="button">Contact Seller (v1 placeholder)</button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <ComplianceBanner category={item.category} />
+          <div class="card" style="padding:14px">
+            <div class="badge">About SportingLinx</div>
+            <p class="muted" style="margin:10px 0 0;line-height:1.5">
+              SportingLinx is a discovery engine. It displays only openly viewable items.
+              Private stages of restricted sale protocols are not shown here.
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
+  </section>
+
+  <div style="height:28px"></div>
+</BaseLayout>

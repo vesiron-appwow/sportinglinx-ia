@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import UtilityBar from "../../components/UtilityBar.astro";
+import FilterBar from "../../components/FilterBar.astro";
+import ItemCard from "../../components/ItemCard.astro";
+import ComplianceBanner from "../../components/ComplianceBanner.astro";
+import { categoryLabel } from "../../lib/categories";
+import { listSporting } from "../../lib/api";
+
+const apiBase = import.meta.env.VTL_API_BASE ?? "http://127.0.0.1:8787";
+const slug = Astro.params.slug ?? "equipment";
+
+const q = Astro.url.searchParams.get("q") ?? "";
+const brand = Astro.url.searchParams.get("brand") ?? "";
+const condition = Astro.url.searchParams.get("condition") ?? "";
+const region = Astro.url.searchParams.get("region") ?? "";
+const priceMin = Astro.url.searchParams.get("priceMin");
+const priceMax = Astro.url.searchParams.get("priceMax");
+
+const items = await listSporting(fetch, apiBase, {
+  category: slug,
+  q: q || undefined,
+  brand: brand || undefined,
+  condition: condition || undefined,
+  region: region || undefined,
+  priceMin: priceMin ? Number(priceMin) : undefined,
+  priceMax: priceMax ? Number(priceMax) : undefined
+});
+
+const initial = { q, brand, condition, region, priceMin: priceMin ?? "", priceMax: priceMax ?? "" };
+---
+<BaseLayout title={`SportingLinx — ${categoryLabel(slug)}`}>
+  <UtilityBar />
+  <section class="container" style="padding:14px var(--pad) 0">
+    <div class="card" style="padding:14px">
+      <h2 style="margin:.3rem 0">{categoryLabel(slug)}</h2>
+      <p class="muted" style="margin:.2rem 0 0">Browse openly viewable items.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding:14px var(--pad) 0">
+    <ComplianceBanner category={slug} />
+  </section>
+
+  <FilterBar initial={initial} />
+
+  <section class="container" style="padding:14px var(--pad) 28px">
+    {items.length === 0 ? (
+      <div class="card" style="padding:14px">
+        <div class="badge">No results</div>
+        <p class="muted" style="margin:10px 0 0">Try adjusting filters.</p>
+      </div>
+    ) : (
+      <div class="grid cols-3">
+        {items.map(i => <ItemCard item={i} />)}
+      </div>
+    )}
+  </section>
+</BaseLayout>

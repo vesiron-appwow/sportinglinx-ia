@@ -1,0 +1,13 @@
+---
+import { CATEGORIES } from "../lib/categories";
+---
+<section class="container" style="padding:14px var(--pad)">
+  <div class="grid cols-3">
+    {CATEGORIES.map(c => (
+      <a class="card" href={`/category/${c.slug}`} style="padding:14px;display:block">
+        <div class="badge">{c.label}</div>
+        <div style="margin-top:10px" class="muted">{c.blurb}</div>
+      </a>
+    ))}
+  </div>
+</section>

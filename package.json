@@ -1,0 +1,16 @@
+{
+  "name": "sportinglinx-ia",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "echo \"(optional) add eslint later\""
+  },
+  "dependencies": {
+    "astro": "^5.18.0",
+    "@astrojs/cloudflare": "^12.3.0"
+  }
+}

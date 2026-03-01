@@ -1,0 +1,199 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Theme */
+
+.slx-theme {
+  background: #0F1E17;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Header */
+
+.slx-header {
+  background: #050A07;
+  border-bottom: 4px solid #7BAE61;
+}
+
+.slx-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.slx-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.slx-badge {
+  width: 48px;
+  height: 48px;
+  background: #5C8C4A;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.slx-title {
+  font-weight: 700;
+}
+
+.slx-sub {
+  font-size: 0.75rem;
+  color: #9EC5A8;
+}
+
+.slx-back {
+  color: #E6F1EA;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Hero */
+
+.slx-hero {
+  padding: 100px 20px 120px;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    #0F1E17 0%,
+    #1F3D2B 60%,
+    #2E5E3B 100%
+  );
+}
+
+.slx-hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.slx-tag {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  opacity: 0.7;
+  margin-bottom: 15px;
+}
+
+.slx-hero h1 {
+  font-size: clamp(2.5rem, 4vw, 3.2rem);
+  font-weight: 800;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.slx-subline {
+  display: block;
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  margin-top: 10px;
+  color: #9EC5A8;
+}
+
+/* Search Section */
+
+.slx-search-section {
+  margin-top: -60px;
+  padding-bottom: 80px;
+}
+
+.slx-search-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Tabs */
+
+.slx-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+
+.slx-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.slx-tab {
+  flex: 0 0 auto;
+  padding: 10px 18px;
+  background: #16281F;
+  color: #E6F1EA;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.slx-tab.active {
+  background: #5C8C4A;
+}
+
+/* Panel */
+
+.slx-panel {
+  background: #111E18;
+  padding: 40px;
+  border-radius: 12px;
+}
+
+.slx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.slx-field label {
+  display: block;
+  font-size: 0.75rem;
+  margin-bottom: 6px;
+  color: #9EC5A8;
+}
+
+.slx-field input,
+.slx-field select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+}
+
+/* Highlight sport */
+
+.slx-field-primary select {
+  border: 2px solid #5C8C4A;
+}
+
+.slx-search-btn {
+  width: 100%;
+  padding: 16px;
+  background: #5C8C4A;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.slx-search-btn:hover {
+  background: #7BAE61;
+}

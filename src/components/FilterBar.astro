@@ -1,0 +1,44 @@
+---
+const { initial = {} } = Astro.props;
+---
+<section class="container" style="padding:14px var(--pad) 0">
+  <form class="card" style="padding:14px" method="GET" action={Astro.url.pathname}>
+    <div class="grid cols-3">
+      <div>
+        <label class="muted">Search</label>
+        <input name="q" value={initial.q ?? ""} placeholder="e.g. boots, rod, signed shirt" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+      </div>
+      <div>
+        <label class="muted">Brand</label>
+        <input name="brand" value={initial.brand ?? ""} placeholder="e.g. Nike, Shimano, Beretta" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+      </div>
+      <div>
+        <label class="muted">Condition</label>
+        <select name="condition" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)">
+          <option value="">Any</option>
+          <option value="new" selected={initial.condition==="new"}>New</option>
+          <option value="used" selected={initial.condition==="used"}>Used</option>
+          <option value="collectible" selected={initial.condition==="collectible"}>Collectible</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="muted">Region</label>
+        <input name="region" value={initial.region ?? ""} placeholder="e.g. Sussex" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+      </div>
+      <div>
+        <label class="muted">Min Price</label>
+        <input name="priceMin" value={initial.priceMin ?? ""} inputmode="numeric" placeholder="0" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+      </div>
+      <div>
+        <label class="muted">Max Price</label>
+        <input name="priceMax" value={initial.priceMax ?? ""} inputmode="numeric" placeholder="9999" style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--slx-border)" />
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap">
+      <button class="btn" type="submit">Search</button>
+      <a class="btn secondary" href={Astro.url.pathname}>Reset</a>
+    </div>
+  </form>
+</section>

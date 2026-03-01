@@ -1,0 +1,11 @@
+---
+const { category } = Astro.props;
+if (category !== "regulated") return null;
+---
+<div class="card" style="padding:12px;border-left:6px solid var(--slx-accent)">
+  <div class="badge">Regulated Guidance</div>
+  <div class="muted" style="margin-top:8px;line-height:1.45">
+    This category may include regulated items. Promotion is restricted to verified licence holders or Registered Firearms Dealers.
+    It is highly recommended that all transactions are handled via a Registered Firearms Dealer. VTL provides discovery only and does not handle payments.
+  </div>
+</div>

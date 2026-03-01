@@ -1,0 +1,18 @@
+---
+import type { SportingItem } from "../lib/api";
+const { item } = Astro.props as { item: SportingItem };
+const price = typeof item.price === "number" ? `£${item.price.toFixed(0)}` : "POA";
+---
+<a class="card" href={`/item/${item.id}`} style="padding:14px;display:block">
+  <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+    <div>
+      <div class="badge">{item.category}</div>
+      <h3 style="margin:.6rem 0 .2rem">{item.title}</h3>
+      <div class="muted">{item.brand ? `${item.brand} • ` : ""}{item.condition ?? "Condition N/A"}{item.region ? ` • ${item.region}` : ""}</div>
+    </div>
+    <div class="badge">{price}</div>
+  </div>
+  <div class="muted" style="margin-top:10px;line-height:1.4">
+    {item.description?.slice(0, 120)}{item.description?.length > 120 ? "…" : ""}
+  </div>
+</a>

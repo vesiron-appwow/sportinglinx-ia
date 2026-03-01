@@ -1,0 +1,23 @@
+---
+const { title = "SportingLinx", subtitle = "Discover equipment, apparel, memorabilia, events and more.", ctaHref = "/category/equipment" } = Astro.props;
+---
+<section class="container" style="padding:18px var(--pad) 0">
+  <div class="card" style="padding:18px">
+    <div class="grid cols-2" style="align-items:center">
+      <div>
+        <h1 style="margin:.2rem 0 .4rem;font-size:2rem">{title}</h1>
+        <p class="muted" style="margin:0 0 1rem">{subtitle}</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn" href={ctaHref}>Browse Categories</a>
+          <a class="btn secondary" href="/category/regulated">Regulated Guidance</a>
+        </div>
+      </div>
+      <div class="card" style="padding:14px;border-style:dashed">
+        <div class="badge" style="margin-bottom:10px">Open view • Subscription-gated action</div>
+        <div class="muted" style="line-height:1.4">
+          Public discovery is open. Only subscribed members can contact or act.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

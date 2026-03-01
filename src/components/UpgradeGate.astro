@@ -1,0 +1,15 @@
+---
+const { canAct } = Astro.props;
+---
+{!canAct && (
+  <div class="card" style="padding:12px;border-left:6px solid var(--slx-primary)">
+    <div class="badge">Subscription required</div>
+    <div class="muted" style="margin-top:8px;line-height:1.45">
+      Public discovery is open. Only subscribed members can contact or act. Upgrade via myLynx.
+    </div>
+    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+      <a class="btn" href="https://mylynx.pages.dev">Go to myLynx</a>
+      <a class="btn secondary" href="https://appwow.pages.dev">Back to AppWow</a>
+    </div>
+  </div>
+)}
