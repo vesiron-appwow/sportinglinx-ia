@@ -102,6 +102,31 @@ import { regions } from "../data/regions";
 
 </div>
 
+<script>
+  const REGION_MAP = JSON.parse(`{JSON.stringify(regions)}`);
 
+  const countryEl = document.getElementById("country");
+  const regionEl = document.getElementById("region");
+
+  function buildOptions(list) {
+    let html = '<option value="">Select Region</option>';
+    if (!Array.isArray(list)) return html;
+    html += list.map(r => `<option value="${r}">${r}</option>`).join("");
+    return html;
+  }
+
+  countryEl.addEventListener("change", () => {
+    const code = countryEl.value;
+
+    if (!code || !REGION_MAP[code]) {
+      regionEl.innerHTML = '<option value="">Select Region</option>';
+      regionEl.disabled = true;
+      return;
+    }
+
+    regionEl.innerHTML = buildOptions(REGION_MAP[code]);
+    regionEl.disabled = false;
+  });
+</script>
 
 </BaseLayout>

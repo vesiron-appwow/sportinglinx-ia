@@ -1,4 +1,4 @@
-// public/js/regionFilter.js
+// public/js/regionfilter.js
 (function () {
   function $(id) { return document.getElementById(id); }
 
@@ -27,7 +27,7 @@
 
     // Hard diagnostic: if these are missing, the script cannot work.
     if (!countryEl || !regionEl || !dataEl) {
-      console.warn("[SportingLinx] regionFilter: missing elements", {
+      console.warn("[SportingLinx] regionfilter: missing elements", {
         countryEl: !!countryEl,
         regionEl: !!regionEl,
         dataEl: !!dataEl
@@ -39,7 +39,7 @@
     try {
       payload = JSON.parse(dataEl.textContent || "{}");
     } catch (e) {
-      console.error("[SportingLinx] regionFilter: invalid JSON payload", e);
+      console.error("[SportingLinx] regionfilter: invalid JSON payload", e);
       return;
     }
 
